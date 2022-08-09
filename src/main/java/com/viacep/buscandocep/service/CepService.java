@@ -18,8 +18,8 @@ public class CepService {
 		return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json", CepModel.class).getBody();
 	}
 	
-	public List<CepModelDto> buscarLista(CepModelForm cepModelDto) {
-		List<String> ceps = cepModelDto.getCeps();
+	public List<CepModelDto> buscarLista(CepModelForm cepModelform) {
+		List<String> ceps = cepModelform.getCeps();
 		List<CepModelDto> lsCepModelDto = new ArrayList<>();
 		ceps.forEach(cep -> {
 			CepModel cepModel = buscar(cep);

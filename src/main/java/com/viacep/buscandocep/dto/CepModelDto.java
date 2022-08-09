@@ -17,7 +17,7 @@ public class CepModelDto {
 	private String gia;
 	private String ddd;
 	private String siafi;
-	private String dto = "dentro do dto";
+
 
 	public CepModelDto(CepModel cm) {
 		

@@ -1,17 +1,31 @@
 package com.viacep.buscandocep.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.viacep.buscandocep.dto.CepModelDto;
 import com.viacep.buscandocep.model.CepModel;
+import com.viacep.buscandocep.resources.CepModelForm;
+
 
 @Service
 public class CepService {
 
 	public CepModel buscar(String cep) {
-
 		return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json", CepModel.class).getBody();
-
 	}
-
+	
+	public List<CepModelDto> buscarLista(CepModelForm cepModelDto) {
+		List<String> ceps = cepModelDto.getCeps();
+		List<CepModelDto> lsCepModelDto = new ArrayList<>();
+		ceps.forEach(cep -> {
+			CepModel cepModel = buscar(cep);
+			CepModelDto endereco = new CepModelDto(cepModel);
+			lsCepModelDto.add(endereco);
+		});
+		return lsCepModelDto;
+	}
 }

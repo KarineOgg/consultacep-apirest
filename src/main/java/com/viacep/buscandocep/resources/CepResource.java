@@ -36,6 +36,8 @@ public class CepResource {
 			@RequestBody CepModelForm cepModelForm) {
 		
 		List<CepModelDto> lsCeps = cepService.buscarLista(cepModelForm);
+
+
 		return ResponseEntity.ok().body(lsCeps);
 	}
 }

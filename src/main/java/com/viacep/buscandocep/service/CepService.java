@@ -3,6 +3,7 @@ package com.viacep.buscandocep.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,10 +16,14 @@ import com.viacep.buscandocep.resources.CepModelForm;
 public class CepService {
 
 	public CepModel buscar(String cep) {
+		if (cep.isEmpty()) {
+			throw new IllegalArgumentException("Um cep precisa ser informado");
+		}
 		return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json", CepModel.class).getBody();
 	}
 	
 	public List<CepModelDto> buscarLista(CepModelForm cepModelform) {
+
 		List<String> ceps = cepModelform.getCeps();
 		List<CepModelDto> lsCepModelDto = new ArrayList<>();
 		ceps.forEach(cep -> {

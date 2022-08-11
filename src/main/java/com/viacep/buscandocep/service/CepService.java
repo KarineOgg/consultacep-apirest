@@ -9,26 +9,28 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
-
 
 @Service
 public class CepService {
 
     public CepModel buscar(String cep) {
 
-        if (cep.isEmpty()) {
-            throw new IllegalArgumentException("Um cep precisa ser informado");
-        } else if (cep.length() != 8) {
-            throw new RuntimeException("CEP inválido");
-        }
-
-
+        verificaValidadeCep(cep);
         return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json", CepModel.class).getBody();
     }
 
+    private void verificaValidadeCep(String cep) {
+        if (cep.isEmpty()) {
+            throw new IllegalArgumentException("Um cep precisa ser informado");
+        }
+
+        if (!cep.matches("[0-9]{8}")) {
+            throw new IllegalArgumentException("CEP inválido.");
+        }
+    }
+
     public List<CepModelDto> buscarLista(CepModelForm cepModelform) {
-        if(cepModelform.getCeps() == null){
+        if (cepModelform.getCeps() == null) {
             throw new RuntimeException("Lista nula");
         }
 

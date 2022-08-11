@@ -15,52 +15,59 @@ import static org.junit.Assert.assertThrows;
 
 
 @SpringBootTest
- class CepServiceTest {
+class CepServiceTest {
 
-	@InjectMocks
-	private CepService cepService = new CepService();
+    @InjectMocks
+    private CepService cepService = new CepService();
 
-	@Test
-	void deveBuscarCepTest() {
-		CepModel buscar = cepService.buscar("21910130");
+    @Test
+    void deveBuscarCepTest() {
+        CepModel buscar = cepService.buscar("21910130");
 
-		Assertions.assertEquals("Rua Doutor Bernardino Gomes", buscar.getLogradouro());
+        Assertions.assertEquals("Rua Doutor Bernardino Gomes", buscar.getLogradouro());
 
-	}
-	@Test
-	void testarConsultaCepComErro() {
+    }
 
-		assertThrows(IllegalArgumentException.class, () -> cepService.buscar(""));
-	}
-	@Test
-	void  testarLimiteString() {
+    @Test
+    void testarConsultaCepComErro() {
 
-		assertThrows(RuntimeException.class, () -> cepService.buscar("219101301"));
-	}
-	@Test
-	void testarCaracterDiferente() {
+        assertThrows(IllegalArgumentException.class, () -> cepService.buscar(""));
+    }
 
-	}
+    @Test
+    void testarLimiteString() {
 
-	@Test
-	void deveTestarBuscaListaCep() {
-		CepModelForm cepModelForm = new CepModelForm();
-		cepModelForm.setCeps(Arrays.asList("26587110"));
-		List<CepModelDto> result = cepService.buscarLista(cepModelForm);
-		Assertions.assertEquals(1, result.size());
-	}
+        assertThrows(RuntimeException.class, () -> cepService.buscar("219101301"));
+    }
 
+    @Test
+    void testarCaracterDiferenteBusca() {
+        String cepFake = "49003tre";
+        assertThrows(IllegalArgumentException.class, () -> cepService.buscar(cepFake));
+    }
 
-	@Test
-	void testaConsultaListaVazia() {
-
-	assertThrows(NullPointerException.class, () -> cepService.buscarLista(null));
+    @Test
+    void deveTestarBuscaListaCep() {
+        CepModelForm cepModelForm = new CepModelForm();
+        cepModelForm.setCeps(Arrays.asList("26587110"));
+        List<CepModelDto> result = cepService.buscarLista(cepModelForm);
+        Assertions.assertEquals(1, result.size());
+    }
 
 
+    @Test
+    void testaConsultaListaVazia() {
 
-	}
+        assertThrows(NullPointerException.class, () -> cepService.buscarLista(null));
 
-	
+
+    }
+
+
+    @Test
+    void testaListaCepNula() {
+        assertThrows(RuntimeException.class, () -> cepService.buscarLista(new CepModelForm()));
+    }
 
 
 }
